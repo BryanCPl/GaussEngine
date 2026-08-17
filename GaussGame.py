@@ -28,34 +28,34 @@ class gaussGame:
         
 
     def AddRow(self,m1,m2,r1,r2):
-            result=[]
+        result=[]
 
-            table2=self.RowOrNum(m2,r2)
-            for i in [0,1,2,3]:
-                print(result)
-                result.append(m1*self.table[r1][i]+table2[i])
-            
-            self.table[r1]=result
+        table2=self.RowOrNum(m2,r2)
+        for i in [0,1,2,3]:
+            result.append(m1*self.table[r1][i]+table2[i])
+        
+        self.table[r1]=result
 
 
     def MultRows(self,m1,m2,r1,r2):
-            result=[]
-            table2=self.RowOrNum(m2,r2)
-            for i in [0,1,2,3]:
-                result.append(m1*self.table[r1][i]+table2[i])
-            self.table[r1]=result
+        result=[]
+        table2=self.RowOrNum(m2,r2)
+        for i in [0,1,2,3]:
+            result.append(m1*self.table[r1][i]+table2[i])
+        self.table[r1]=result
 
     def DivRows(self,m1,m2,r1,r2):
-                result=[]
-                table2=self.RowOrNum(m2,r2)
-                for i in [0,1,2,3]:
-                    #this is only for dont show negative 0
-                    if self.table[r1][i]!=0:
-                        result.append(m1*self.table[r1][i]/table2[i])
-                    else:
-                        result.append(m1*self.table[r1][i])
-                self.table[r1]=result
+        result=[]
+        table2=self.RowOrNum(m2,r2)
+        for i in [0,1,2,3]:
+            #this is only for dont show negative 0
+            if self.table[r1][i]!=0:
+                result.append(m1*self.table[r1][i]/table2[i])
+            else:
+                result.append(m1*self.table[r1][i])
+        self.table[r1]=result
 
+    #later for dont repeat code
     def RowManipulation(self,m1,m2,r1,r2,form):
         result=[]
         table2=self.RowOrNum(m2,r2)
@@ -78,7 +78,7 @@ class gaussGame:
         self.table[r2]=result
 
     def defineOperation(self,simbol:str,m1:int,m2:int,r1:int,r2:int):
-        print(r1)
+        
         match simbol:
             case "+":
                 self.AddRow(m1,m2,r1,r2)
@@ -102,31 +102,28 @@ class gaussGame:
         m2=1
         operation=""
         try:
-
             operation=self.whichOperation(notation)
-
             comand=notation.split(operation)
 
-            r1=int(comand[0][-1])-1
+            if len(comand)==2:
+                print(comand[0][0],comand[1][0])
+                if comand[0][0]!="f":
+                    m1=comand[0].split("f")[0]
+                if comand[1][0]!="f":
+                    m2=comand[1].split("f")[0]
 
-            if comand[0][0]!="f":
-                m1=comand[0][0]
-
-            #if has letter f want manipulate row
-            if "f" in comand[1]:
-                if comand[1][0]=="f":
-                    r2=int(comand[1][-1])-1
-                elif comand[1][1]=="f":
-                    r2=int(comand[1][-1])-1
-                    m2=int(comand[1][0])
-                #If f is in second place, behind it is the multiplier
+                r1=comand[0].split("f")[1]
+                r2=comand[1].split("f")[1]
+                r2=int(r2)-1
             else:
-                # only get the number
-                m2=int(comand[1])
+                r1=comand[0].split(operation)[0].split("f")[1]
+                m2=comand[0].split(operation)[1]
 
+            r1=int(r1)-1
+            
+            
+            
             print(f"{m1}f{r1}{operation}{m2}f{r2}")
-
-
             self.defineOperation(operation,int(m1),int(m2),r1,r2) # type: ignore
             return self.showTable()
         except:
